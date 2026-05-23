@@ -1,5 +1,7 @@
 let viaggi = [];
 
+// (nessuna gestione utenti: il login è decorativo)
+
 // Elementi comuni
 let container2 = document.getElementById("container2");
 
@@ -16,6 +18,15 @@ let btn2 = document.getElementById("butt2");
 let btn3 = document.getElementById("butt3");
 let btn4 = document.getElementById("butt4");
 let btnSave = document.getElementById("buttSave");
+let loginButton = document.getElementById('loginButton');
+
+if (loginButton) {
+    loginButton.addEventListener('click', function () {
+        window.location.href = 'index.html';
+    });
+}
+
+// Elementi pagina di login (decorativi)
 
 // Gestione dinamica dei Modal
 let modalElement1 = document.getElementById('mymodal');
@@ -57,13 +68,13 @@ function aggiungi() {
     let pr = parseFloat(prezzo.value);
     let check = checkbox.checked;
 
-    if (cit === "" || date === "" || isNaN(pr)) {
+    if (cit == "" || date == "" || isNaN(pr)) {
         alert("Compila tutti i campi correttamente prima di procedere.");
         return;
     }
 
     let partiData = date.split("-");
-    let dataIt = `${partiData[2]}-${partiData[1]}-${partiData[0]}`;
+    let dataIt = partiData[2] + "-" + partiData[1] + "-" + partiData[0];
 
     if (controllaDuplicati(cit) == -1) {
         let viaggio = {
@@ -74,6 +85,7 @@ function aggiungi() {
         };
 
         viaggi.push(viaggio);
+        localStorage.setItem("registroViaggi", JSON.stringify(viaggi));
         alert("Viaggio registrato in elenco!");
         lista();
         
@@ -101,6 +113,7 @@ function eliminaCittà() {
 
     if (indice != -1) {
         viaggi.splice(indice, 1);
+        localStorage.setItem("registroViaggi", JSON.stringify(viaggi));
         alert("Viaggio eliminato con successo.");
         città1.value = "";
         lista();
@@ -122,8 +135,8 @@ function lista() {
     if (!container2) return;
     container2.innerHTML = "";
     
-    if (viaggi.length === 0) {
-        container2.innerHTML = `<div class="alert alert-secondary text-center">Nessun viaggio presente in memoria.</div>`;
+    if (viaggi.length == 0) {
+        container2.innerHTML = '<div class="alert alert-secondary text-center">Nessun viaggio presente in memoria.</div>';
         return;
     }
 
@@ -148,12 +161,16 @@ function lista() {
     let tbody = document.createElement("tbody");
     for (let i = 0; i < viaggi.length; i++) {
         let tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${viaggi[i].città}</td>
-            <td>${viaggi[i].data}</td>
-            <td>${viaggi[i].prezzo.toFixed(2)} €</td>
-            <td>${viaggi[i].checkbox ? "Sì ✈️" : "No 🚗"}</td>
-        `;
+        let flightText;
+        if (viaggi[i].checkbox == true) {
+            flightText = "Sì ✈️";
+        } else {
+            flightText = "No 🚗";
+        }
+        tr.innerHTML = '<td>' + viaggi[i].città + '</td>' +
+                       '<td>' + viaggi[i].data + '</td>' +
+                       '<td>' + viaggi[i].prezzo.toFixed(2) + ' €</td>' +
+                       '<td>' + flightText + '</td>';
         tbody.appendChild(tr);
     }
     table.appendChild(tbody);
@@ -176,14 +193,18 @@ function mostraModalVoli() {
     let contatoreVoli = 0;
 
     for (let i = 0; i < viaggi.length; i++) {
-        if (viaggi[i].checkbox === true) {
+        if (viaggi[i].checkbox == true) {
             contatoreVoli++;
             aereoCitta.push(viaggi[i].città);
         }
     }
     
     p2.innerHTML = "L'utente ha preso il volo per un totale di <strong>" + contatoreVoli + "</strong> volte.";
-    p3.innerHTML = aereoCitta.length > 0 ? aereoCitta.join(", ") : "Nessun volo inserito.";
+    if (aereoCitta.length > 0) {
+        p3.innerHTML = aereoCitta.join(", ");
+    } else {
+        p3.innerHTML = "Nessun volo inserito.";
+    }
     myModal1.show();
 }
 
