@@ -1,0 +1,566 @@
+/* Stili base per il progetto Registro Viaggi */
+:root {
+    color-scheme: light;
+    --bg-100: #f8fafc;
+    --bg-200: #e2e8f0;
+    --bg-500: #0f172a;
+    --surface: rgba(255, 255, 255, 0.95);
+    --surface-strong: #ffffff;
+    --accent: #1d4ed8;
+    --accent-strong: #0ea5e9;
+    --accent-soft: #eff6ff;
+    --text: #0f172a;
+    --text-muted: #475569;
+    --border: rgba(15, 23, 42, 0.08);
+    --shadow: 0 30px 60px rgba(15, 23, 42, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text);
+    background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 24%),
+        radial-gradient(circle at 80% 20%, rgba(14, 165, 233, 0.14), transparent 22%),
+        linear-gradient(180deg, #f8fafc 0%, #eef2ff 55%, #cfe0ff 100%);
+    background-attachment: fixed;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 20%),
+        linear-gradient(135deg, rgba(255,255,255,0.14) 25%, transparent 25%),
+        linear-gradient(225deg, rgba(255,255,255,0.14) 25%, transparent 25%);
+    background-size: 260px 260px, 40px 40px, 40px 40px;
+    pointer-events: none;
+    opacity: 0.65;
+    z-index: 0;
+}
+
+body.container.my-4 {
+    background: transparent;
+}
+
+.container.my-4 {
+    max-width: 1140px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.hero-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(280px, 1fr);
+    gap: 1.5rem;
+    align-items: center;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(240, 248, 255, 0.82));
+    border: 1px solid rgba(14, 165, 233, 0.16);
+    border-radius: 32px;
+    box-shadow: 0 34px 80px rgba(15, 23, 42, 0.08);
+}
+
+.hero-copy h1 {
+    font-size: clamp(2.6rem, 4vw, 3.8rem);
+    line-height: 1.02;
+    margin: 0.6rem 0 0.7rem;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    background: rgba(14, 165, 233, 0.14);
+    color: #0f172a;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.hero-copy p {
+    max-width: 720px;
+    margin-bottom: 1.4rem;
+    color: #475569;
+    font-size: 1rem;
+}
+
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.hero-buttons .btn {
+    min-width: 170px;
+}
+
+.hero-visual {
+    display: flex;
+    justify-content: center;
+}
+
+.hero-card {
+    width: 100%;
+    min-height: 220px;
+    padding: 1.8rem;
+    background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.16), rgba(255, 255, 255, 0.85));
+    border: 1px solid rgba(14, 165, 233, 0.12);
+    border-radius: 28px;
+    box-shadow: 0 24px 45px rgba(15, 23, 42, 0.07);
+}
+
+.hero-card strong {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+}
+
+.hero-card p {
+    margin: 0;
+    color: #475569;
+    line-height: 1.7;
+}
+
+body.index-page {
+    background: radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.12), transparent 22%),
+        radial-gradient(circle at 90% 30%, rgba(14, 165, 233, 0.08), transparent 18%),
+        linear-gradient(180deg, #f8fafc 0%, #eef2ff 58%, #dbeafe 100%);
+}
+
+body.history-page {
+    background: radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.12), transparent 24%),
+        radial-gradient(circle at 85% 15%, rgba(59, 130, 246, 0.1), transparent 20%),
+        linear-gradient(180deg, #f8fafc 0%, #eef2ff 58%, #dbeafe 100%);
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.action-card {
+    display: block;
+    min-height: 150px;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+    color: var(--bg-500);
+    text-decoration: none;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.action-card:hover,
+.action-card:focus-visible {
+    transform: translateY(-4px);
+    border-color: rgba(14, 165, 233, 0.45);
+    box-shadow: 0 28px 60px rgba(15, 23, 42, 0.12);
+}
+
+.action-card h2 {
+    margin-bottom: 0.75rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.action-card p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.action-card-secondary {
+    background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--bg-500);
+    margin-top: 0;
+}
+
+h1 {
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 800;
+}
+
+p {
+    color: var(--text-muted);
+}
+
+.card,
+input.form-control,
+.input-group .form-control,
+.modal-content,
+#divCentrale {
+    background: var(--surface-strong);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+.card {
+    padding: 1.75rem;
+    overflow: hidden;
+}
+
+input.form-control,
+.input-group .form-control {
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    padding: 1rem 1.1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input.form-control:focus,
+.input-group .form-control:focus {
+    outline: none;
+    border-color: var(--accent-strong);
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.18);
+}
+
+.form-check-input {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.2rem;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+    border-color: transparent;
+    color: #fff;
+}
+
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-outline-secondary {
+    background-color: #ffffff;
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+    background-color: var(--accent-soft);
+}
+
+.btn-success {
+    background-color: #10b981;
+    border-color: transparent;
+    color: #fff;
+}
+
+.btn-danger {
+    background-color: #ef4444;
+    border-color: transparent;
+    color: #fff;
+}
+
+.btn-warning {
+    background-color: #f59e0b;
+    border-color: transparent;
+    color: #0f172a;
+}
+
+.btn.bg-info,
+.btn.bg-info:hover,
+.btn.bg-info:focus {
+    background-color: #0ea5e9 !important;
+    border-color: transparent !important;
+}
+
+#container2 {
+    margin-top: 1.5rem;
+}
+
+#container2 .table {
+    background: var(--surface-strong);
+    border-radius: 18px;
+    overflow: hidden;
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #0f172a;
+    color: #fff;
+}
+
+thead th {
+    padding: 1rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background: #eff6ff;
+}
+
+tbody td {
+    padding: 1rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.alert-secondary {
+    background-color: #eff6ff;
+    border-color: #dbeafe;
+    color: var(--text);
+}
+
+.section-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+body.login-page {
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #dbeafe 0%, #eff6ff 35%, #f8fafc 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+body.login-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.5) 0%, transparent 28%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.2) 10%, transparent 10%),
+        linear-gradient(225deg, rgba(255, 255, 255, 0.2) 10%, transparent 10%);
+    background-size: 280px 280px, 40px 40px, 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+#divContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1080px;
+    position: relative;
+    z-index: 1;
+}
+
+#divCentrale {
+    width: min(480px, 100%);
+    background: rgba(255, 250, 241, 0.98);
+    border-radius: 36px;
+    border: 1px solid rgba(162, 121, 78, 0.25);
+    box-shadow: 0 32px 80px rgba(68, 55, 42, 0.12);
+    padding: 40px 34px;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+}
+
+#divCentrale::before {
+    content: "DIARIO DI VIAGGIO";
+    position: absolute;
+    top: 22px;
+    right: 24px;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: rgba(112, 75, 41, 0.45);
+    transform: rotate(8deg);
+}
+
+#divCentrale::after {
+    content: "✈";
+    position: absolute;
+    left: -12px;
+    top: 18px;
+    font-size: 3.2rem;
+    color: rgba(216, 111, 50, 0.18);
+}
+
+.login-shell {
+    position: relative;
+    width: min(100%, 1000px);
+    max-width: 1000px;
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem;
+    z-index: 1;
+}
+
+.login-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.login-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    font-family: 'Georgia', serif;
+    font-size: clamp(2.5rem, 7vw, 3.8rem);
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+    text-shadow: 2px 2px 10px rgba(20, 82, 153, 0.12);
+}
+
+.subtitle {
+    color: var(--text-muted);
+    margin-bottom: 1.75rem;
+}
+
+.field {
+    width: 100%;
+}
+
+#divCentrale input {
+    width: 100%;
+    border: 1px solid rgba(164, 142, 119, 0.45);
+    border-radius: 18px;
+    padding: 14px 16px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    color: #3c3528;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#divCentrale input:focus {
+    outline: none;
+    border-color: #d98f55;
+    box-shadow: 0 0 0 4px rgba(217, 143, 85, 0.15);
+}
+
+#loginButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border: none;
+    border-radius: 999px;
+    padding: 16px 22px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #d96f32 0%, #ca8a51 100%);
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 14px 32px rgba(217, 111, 50, 0.24);
+}
+
+#loginButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 20px 38px rgba(217, 111, 50, 0.28);
+}
+
+@media (max-width: 900px) {
+    .container.my-4 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .hero-panel {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+    }
+
+    .hero-visual {
+        justify-content: flex-start;
+    }
+
+    .action-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card,
+    #divCentrale,
+    .input-group {
+        border-radius: 20px;
+    }
+
+    .input-group .form-control,
+    .input-group .btn,
+    .btn {
+        width: 100%;
+    }
+
+    .input-group {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 640px) {
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+
+    body {
+        background: #f8fafc;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .card {
+        padding: 1.25rem;
+    }
+
+    .mb-4,
+    .mb-5,
+    .mt-4 {
+        margin-bottom: 1rem !important;
+    }
+
+    .btn {
+        padding: 0.95rem 1.1rem;
+        font-size: 0.95rem;
+    }
+
+    #container2 .table,
+    .card,
+    #divCentrale {
+        border-radius: 18px;
+    }
+}
