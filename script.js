@@ -18,6 +18,8 @@ let btn2 = document.getElementById("butt2");
 let btn3 = document.getElementById("butt3");
 let btn4 = document.getElementById("butt4");
 let btnSave = document.getElementById("buttSave");
+let btnGemini = document.getElementById("btnGemini");
+let geminiOutput = document.getElementById("geminiOutput");
 let loginButton = document.getElementById('loginButton');
 
 if (loginButton) {
@@ -58,6 +60,7 @@ if (btn2) btn2.addEventListener("click", mostraModalVoli);
 if (btn3) btn3.addEventListener("click", eliminaTutti);
 if (btn4) btn4.addEventListener("click", eliminaCittà);
 if (btnSave) btnSave.addEventListener("click", salvaInLocalStorage);
+if (btnGemini) btnGemini.addEventListener("click", generaConsigliGemini);
 
 
 // --- Logica delle Funzioni ---
@@ -211,4 +214,63 @@ function mostraModalVoli() {
 function salvaInLocalStorage() {
     localStorage.setItem("registroViaggi", JSON.stringify(viaggi));
     alert("Database locale aggiornato e sincronizzato nel browser con successo!");
+}
+
+function costruisciPromptGemini() {
+    const cittàVisitata = viaggi.map(v => v.città);
+    const jsonCittà = JSON.stringify(cittàVisitata);
+    return `Leggi i seguenti dati in JSON:\n${jsonCittà}\nRispondi esclusivamente in JSON (no backtick, no markdown) suggerendomi 3 nuove città che potrei visitare in base ai dati che ti ho fornito. Il JSON che devi fornire deve avere un campo listaSuggerimenti che contiene un array di 3 oggetti dove ogni oggetto ha 2 campi: nome che contiene il nome della città e descrizione che contiene una brevissima descrizione sul perchè quella città è stata proposta`;
+}
+
+async function generaConsigliGemini() {
+    if (!geminiOutput) return;
+
+    if (viaggi.length === 0) {
+        geminiOutput.innerHTML = '<div class="alert alert-warning">Aggiungi almeno una città visitata per generare suggerimenti.</div>';
+        return;
+    }
+
+    geminiOutput.innerHTML = '<div class="alert alert-info">Invio richiesta a Gemini... attendere.</div>';
+
+    const apiKey = window.GEMINI_API_KEY || localStorage.getItem('GEMINI_API_KEY');
+    if (!apiKey) {
+        geminiOutput.innerHTML = '<div class="alert alert-danger">Chiave API Gemini mancante. Imposta window.GEMINI_API_KEY o salva la chiave in localStorage con GEMINI_API_KEY.</div>';
+        return;
+    }
+
+    const prompt = costruisciPromptGemini();
+    const modelName = window.GEMINI_MODEL || 'gemini-1.0';
+
+    try {
+        const response = await fetch('https://api.openai.com/v1/responses', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                model: modelName,
+                input: prompt,
+                temperature: 0.8
+            })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+            geminiOutput.innerHTML = `<div class="alert alert-danger">Errore Gemini: ${response.status} ${response.statusText}<pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            return;
+        }
+
+        let textOutput = data.output_text || '';
+        if (!textOutput && data.output && data.output.length > 0) {
+            textOutput = data.output.map(item => item.content?.map(c => c.text).join('')).join('');
+        }
+        if (!textOutput) {
+            textOutput = JSON.stringify(data, null, 2);
+        }
+
+        geminiOutput.innerHTML = `<div class="card bg-white p-3 border rounded"><pre class="mb-0">${textOutput}</pre></div>`;
+    } catch (error) {
+        geminiOutput.innerHTML = `<div class="alert alert-danger">Errore durante la chiamata a Gemini: ${error.message}</div>`;
+    }
 }
