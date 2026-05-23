@@ -101,10 +101,27 @@ body.container.my-4 {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+    margin-top: 1.5rem;
 }
 
 .hero-buttons .btn {
     min-width: 170px;
+}
+
+.hero-return-button {
+    background: linear-gradient(135deg, #2563eb 0%, #0891b2 100%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    box-shadow: 0 18px 40px rgba(13, 50, 113, 0.18);
+    padding: 0.95rem 1.6rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.hero-return-button:hover,
+.hero-return-button:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 48px rgba(13, 50, 113, 0.2);
+    filter: brightness(1.05);
 }
 
 .hero-visual {
@@ -350,7 +367,8 @@ tbody td {
 
 body.login-page {
     min-height: 100vh;
-    background: radial-gradient(circle at top, #dbeafe 0%, #eff6ff 35%, #f8fafc 100%);
+    background: radial-gradient(circle at 20% 10%, rgba(255, 248, 237, 0.92), transparent 28%),
+        linear-gradient(180deg, #fff9f1 0%, #f6ecdf 42%, #e8dac8 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -361,12 +379,23 @@ body.login-page::before {
     content: "";
     position: fixed;
     inset: 0;
-    background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.5) 0%, transparent 28%),
-        linear-gradient(135deg, rgba(255, 255, 255, 0.2) 10%, transparent 10%),
-        linear-gradient(225deg, rgba(255, 255, 255, 0.2) 10%, transparent 10%);
-    background-size: 280px 280px, 40px 40px, 40px 40px;
+    background-image: radial-gradient(circle at 15% 18%, rgba(255, 255, 255, 0.7) 0%, transparent 20%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.18) 12%, transparent 12%),
+        linear-gradient(225deg, rgba(255, 255, 255, 0.18) 12%, transparent 12%),
+        repeating-linear-gradient(180deg, rgba(126, 89, 41, 0.04) 0, rgba(126, 89, 41, 0.04) 1px, transparent 1px, transparent 22px);
+    background-size: 280px 280px, 40px 40px, 40px 40px, 100% 44px;
     pointer-events: none;
     z-index: 0;
+}
+
+body.login-page::after {
+    content: "✈︎";
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    font-size: 5rem;
+    color: rgba(167, 122, 74, 0.16);
+    pointer-events: none;
 }
 
 #divContainer {
@@ -381,34 +410,108 @@ body.login-page::before {
 
 #divCentrale {
     width: min(480px, 100%);
-    background: rgba(255, 250, 241, 0.98);
+    background: linear-gradient(180deg, rgba(255, 252, 242, 0.96) 0%, rgba(255, 245, 228, 0.96) 100%);
     border-radius: 36px;
-    border: 1px solid rgba(162, 121, 78, 0.25);
-    box-shadow: 0 32px 80px rgba(68, 55, 42, 0.12);
-    padding: 40px 34px;
+    border: 1px solid rgba(162, 121, 78, 0.28);
+    box-shadow: 0 34px 90px rgba(86, 58, 29, 0.14);
+    padding: 44px 36px;
     position: relative;
     overflow: hidden;
     text-align: left;
+    background-image: radial-gradient(circle at top left, rgba(255, 255, 255, 0.65), transparent 28%),
+        linear-gradient(135deg, rgba(210, 180, 140, 0.05) 0%, transparent 40%);
 }
 
 #divCentrale::before {
     content: "DIARIO DI VIAGGIO";
     position: absolute;
-    top: 22px;
+    top: 18px;
     right: 24px;
-    font-size: 0.8rem;
-    letter-spacing: 0.2em;
-    color: rgba(112, 75, 41, 0.45);
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    color: rgba(124, 84, 46, 0.36);
     transform: rotate(8deg);
 }
 
 #divCentrale::after {
     content: "✈";
     position: absolute;
-    left: -12px;
-    top: 18px;
-    font-size: 3.2rem;
-    color: rgba(216, 111, 50, 0.18);
+    left: -8px;
+    top: 16px;
+    font-size: 3.5rem;
+    color: rgba(173, 124, 64, 0.16);
+}
+
+.travel-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #9a6b3d;
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(255, 240, 221, 0.85);
+    border: 1px solid rgba(155, 109, 57, 0.18);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+#divCentrale h1 {
+    margin-top: 0;
+    margin-bottom: 0.85rem;
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    color: #3f2d1d;
+}
+
+#divCentrale .subtitle {
+    color: #6c5843;
+    margin-bottom: 1.75rem;
+}
+
+#divCentrale input {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: inset 0 2px 8px rgba(146, 115, 74, 0.08);
+}
+
+#loginButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border: none;
+    border-radius: 999px;
+    padding: 16px 22px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    box-shadow: 0 14px 32px rgba(168, 104, 38, 0.24);
+}
+
+#loginButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 38px rgba(168, 104, 38, 0.28);
+    filter: brightness(1.04);
+}
+
+.note {
+    color: #5f4f3d;
+    background: rgba(255, 249, 237, 0.9);
+    border-left: 4px solid rgba(196, 135, 52, 0.8);
+    padding: 1rem 1rem 0.9rem;
+    border-radius: 18px;
+    margin-top: 1rem;
+}
+
+.note strong {
+    color: #4f3c2a;
 }
 
 .login-shell {
@@ -440,8 +543,8 @@ body.login-page::before {
     font-family: 'Georgia', serif;
     font-size: clamp(2.5rem, 7vw, 3.8rem);
     margin-bottom: 1.5rem;
-    color: var(--accent);
-    text-shadow: 2px 2px 10px rgba(20, 82, 153, 0.12);
+    color: #7c4a1b;
+    text-shadow: 2px 2px 10px rgba(124, 74, 27, 0.16);
 }
 
 .subtitle {
