@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+rel="stylesheet" 
+integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+crossorigin="anonymous">
+</head>
+<body>
+
+    <h1>Lista Viaggi</h1>
+    <form>
+        <input id="city" type="text" placeholder="Città">
+        <input id="date" type="date">
+        <p>Utilizzo dell'aereo</p>
+        <input id="checkbox" type="checkbox">
+        <input id="price" type="text" placeholder="Soldi spesi">
+        <button id="butt">AGGIUNGI VIAGGIO</button>
+    </form>
+
+    <button id="butt1">TOTALE SPESO</button>
+    <button id="butt2">NUMERO VOLI</button>
+
+
+    <hr>
+
+    <button id="butt3">ELIMINA VIAGGI</button>
+
+    <p>Inserisci città da eliminare</p>
+    <input id="city1" type="text" placeholder="Città">
+    <button id="butt4">ELIMINA VIAGGIO</button>
+
+
+    <div class="modal fade" id="mymodal" tabindex="-1"> 
+        <div class="modal-dialog"> 
+            <div class="modal-content"> 
+                <div class="modal-header"> 
+                    <h1 class="modal-title fs-5">TOTALE SPESO IN TUTTI I VIAGGI</h1> 
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
+                </div> 
+                <div class="modal-body"> 
+                    <p id="p1"></p>
+                </div> 
+            </div> 
+        </div> 
+    </div>
+
+    <div class="modal-body" id="mymodal1">
+        <h5>NUMERO VOLI</h5>
+            <p id="p2"></p>
+            <hr>
+        <h5>CITTA' VISITATE</h5>
+            <p id="p3"></p>
+    </div>
+
+    <script 
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
+    crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+</body>
+</html>
