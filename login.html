@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at top left, rgba(255, 255, 240, 0.95) 0%, rgba(248, 225, 189, 0.9) 30%, rgba(183, 218, 232, 0.95) 100%);
+            color: #2f2f2f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.4) 0%, transparent 30%),
+                linear-gradient(135deg, rgba(255, 255, 255, 0.15) 15%, transparent 15%),
+                linear-gradient(225deg, rgba(255, 255, 255, 0.15) 15%, transparent 15%);
+            background-size: 280px 280px, 40px 40px, 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #divContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 1080px;
+            position: relative;
+            z-index: 1;
+        }
+
+        #divCentrale {
+            width: min(420px, 100%);
+            background: rgba(255, 250, 241, 0.98);
+            border-radius: 36px;
+            border: 1px solid rgba(162, 121, 78, 0.25);
+            box-shadow: 0 32px 80px rgba(68, 55, 42, 0.12);
+            padding: 40px 34px;
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        #divCentrale::before {
+            content: "DIARIO DI VIAGGIO";
+            position: absolute;
+            top: 22px;
+            right: 24px;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            color: rgba(112, 75, 41, 0.45);
+            transform: rotate(8deg);
+        }
+
+        #divCentrale::after {
+            content: "✈";
+            position: absolute;
+            left: -12px;
+            top: 18px;
+            font-size: 3.2rem;
+            color: rgba(216, 111, 50, 0.18);
+        }
+
+        h1 {
+            font-family: 'Georgia', serif;
+            font-size: clamp(2rem, 4vw, 2.6rem);
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        p.subtitle {
+            margin-bottom: 28px;
+            color: #6a4f38;
+            line-height: 1.5;
+            font-size: 0.97rem;
+        }
+
+        .field {
+            display: block;
+            width: 100%;
+            margin-bottom: 18px;
+        }
+
+        input {
+            width: 100%;
+            border: 1px solid rgba(164, 142, 119, 0.45);
+            border-radius: 18px;
+            padding: 14px 16px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            color: #3c3528;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #d98f55;
+            box-shadow: 0 0 0 4px rgba(217, 143, 85, 0.15);
+        }
+
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            border: none;
+            border-radius: 999px;
+            padding: 16px 22px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #d96f32 0%, #ca8a51 100%);
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 14px 32px rgba(217, 111, 50, 0.24);
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 20px 38px rgba(217, 111, 50, 0.28);
+        }
+
+        .note {
+            margin-top: 26px;
+            color: #7b6045;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .note strong {
+            color: #3c3024;
+        }
+
+        .title {
+            font-family: 'Georgia', serif;
+            font-size: clamp(3.2rem, 8vw, 4.8rem);
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #2c2419;
+            text-align: center;
+            margin-bottom: 48px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        .title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #d96f32 50%, transparent 100%);
+            margin: 16px auto 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="divContainer">
+        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <h2 class="title">THE LAST DANCE</h2>
+            <div id="divCentrale">
+            <h1>Benvenuto</h1>
+            <p class="subtitle">Apri il tuo diario di viaggio digitale e inizia a scoprire itinerari, ricordi e avventure attraverso un login curato e accogliente.</p>
+
+            <label class="field" for="username">
+                <input id="username" type="text" placeholder="Nome utente" autocomplete="username">
+            </label>
+
+            <label class="field" for="password">
+                <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+            </label>
+
+            <button id="loginButton">Accedi</button>
+
+            <p class="note"><strong>Consiglio:</strong> usa una password sicura e tieni il diario sempre a portata di mano per immortalare ogni tappa.</p>
+            <p class="note"><strong>Parametri:</strong> la password deve essere compresa <strong>tra 8 e 20 caratteri</strong>, deve contenere almeno <strong>una lettera maiuscola</strong>, <strong>una lettera minuscola</strong> e <strong>un numero</strong>.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
