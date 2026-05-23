@@ -38,3 +38,16 @@ Per abilitare il funzionamento corretto del modulo di Intelligenza Artificiale, 
 
 ```javascript
 const CHIAVE_GEMINI = "LA_TUA_API_KEY_REALE_QUI";
+
+---
+
+## 👥 Suddivisione del Lavoro
+
+Trattandosi di un progetto accademico / di gruppo, le attività di progettazione e sviluppo sono state ripartite in modo equilibrato per toccare tutti gli aspetti dell'applicazione:
+
+| Componente del Team | Ruoli e Compiti Principali |
+| **Cristian Innocenti** | **Sviluppo Logica e CSS** |
+| **Soufian Hammoudi** | **Sviuluppo logica e Integrazione Bootstrap** |
+| **Mattia De Pace** | **Struttura login e CSS** |
+
+
