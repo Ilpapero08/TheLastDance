@@ -20,12 +20,37 @@ let btn4 = document.getElementById("butt4");
 let btnSave = document.getElementById("buttSave");
 let btnGemini = document.getElementById("btnGemini");
 let geminiOutput = document.getElementById("geminiOutput");
-let loginButton = document.getElementById('loginButton');
+let loginButton = document.getElementById("loginButton");
+let username = document.getElementById("username");
+let password = document.getElementById("password");
 
-if (loginButton) {
-    loginButton.addEventListener('click', function () {
-        window.location.href = 'index.html';
-    });
+loginButton.addEventListener('click',gestisciLogin);
+    
+function gestisciLogin(){
+    let user = username.value.trim();
+    let pass = password.value;
+    if(user.length!=0 && pass.length==0){
+        alert("PER FAVORE INSERISCI ANCHE LA PASSWORD PRIMA DI PROSEGUIRE");
+        return;
+    } else if(user.length==0 && pass.length!=0){
+        alert("PER FAVORE INSERISCI ANCHE L'USERNAME PRIMA DI PROSEGUIRE");
+        return;
+    } else if(user.length!=0 && pass.length!=0){
+        if(pass.length>=8 && pass.length<=20){
+            if (/[A-Z]/.test(pass) && /[a-z]/.test(pass) && /\d/.test(pass)){
+                alert("ACCESSO EFFETTUATO! PASSWORD VALIDA");
+                window.location.href = 'index.html';
+                return;
+            }
+            alert("LA PASSWORD NON SODDISFA I REQUISITI MINIMI");
+            return;
+        }
+        alert("LA PASSWORD NON SODDISFA I REQUISITI MINIMI");
+        return;
+    }
+    alert("PER FAVORE COMPILA ENTRAMBI I CAMPI PRIMA DI PROSEGUIRE");
+    return;
+    
 }
 
 // Elementi pagina di login (decorativi)
