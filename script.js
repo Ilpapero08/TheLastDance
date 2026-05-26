@@ -1,7 +1,5 @@
 let viaggi = [];
 
-// (nessuna gestione utenti: il login è decorativo)
-
 // Elementi comuni
 let container2 = document.getElementById("container2");
 
@@ -20,30 +18,61 @@ let btn4 = document.getElementById("butt4");
 let btnSave = document.getElementById("buttSave");
 let btnGemini = document.getElementById("btnGemini");
 let geminiOutput = document.getElementById("geminiOutput");
+
+// Elementi pagina di login
 let loginButton = document.getElementById("loginButton");
 let username = document.getElementById("username");
 let password = document.getElementById("password");
 
-loginButton.addEventListener('click',gestisciLogin);
-    
-function gestisciLogin(){
+// Gestione dei Modal
+let modalElement1 = document.getElementById('mymodal');
+let modalElement2 = document.getElementById('mymodal1');
+let myModal = new bootstrap.Modal(modalElement1);
+let p1 = document.getElementById("p1");
+
+let myModal1 = new bootstrap.Modal(modalElement2);
+let p2 = document.getElementById("p2");
+let p3 = document.getElementById("p3");
+
+// Lettura iniziale dei dati memorizzati nel Browser
+let datiSalvati = localStorage.getItem("registroViaggi");
+if (datiSalvati) {
+    viaggi = JSON.parse(datiSalvati);
+}
+
+// Chiamata immediata della funzione di rendering della tabella
+lista();
+
+// --- ASSEGNAZIONE DEGLI EVENTI (Ripristinata senza controlli condizionali) ---
+loginButton.addEventListener('click', gestisciLogin);
+btn.addEventListener("click", aggiungi);
+btn1.addEventListener("click", mostraModalSpesa);
+btn2.addEventListener("click", mostraModalVoli);
+btn3.addEventListener("click", eliminaTutti);
+btn4.addEventListener("click", eliminaCittà);
+btnSave.addEventListener("click", salvaInLocalStorage);
+btnGemini.addEventListener("click", generaConsigliGemini);
+
+// --- LOGICA DELLE FUNZIONI ---
+
+function gestisciLogin() {
     let user = username.value.trim();
     let pass = password.value;
 
-    if(user=="admin" && pass=="admin"){
+    if (user == "admin" && pass == "admin") {
         alert("ACCESSO EFFETTUATO! CREDENZIALI CORRETTE");
         window.location.href = 'index.html';
         return;
-    } else{
-            if(user.length!=0 && pass.length==0){
+    } else {
+        if (user.length != 0 && pass.length == 0) {
             alert("PER FAVORE INSERISCI ANCHE LA PASSWORD PRIMA DI PROSEGUIRE");
             return;
-        } else if(user.length==0 && pass.length!=0){
+        } else if (user.length == 0 && pass.length != 0) {
             alert("PER FAVORE INSERISCI ANCHE L'USERNAME PRIMA DI PROSEGUIRE");
             return;
-        } else if(user.length!=0 && pass.length!=0){
-            if(pass.length>=8 && pass.length<=20){
-                if (/[A-Z]/.test(pass) && /[a-z]/.test(pass) && /\d/.test(pass)){
+        } else if (user.length != 0 && pass.length != 0) {
+            if (pass.length >= 8 && pass.length <= 20) {
+                if (/[A-Z]/.test(pass) && /[a-z]/.test(pass) && /\d/.test(pass)) {
                     alert("ACCESSO EFFETTUATO! PASSWORD VALIDA");
                     window.location.href = 'index.html';
                     return;
@@ -57,45 +86,7 @@ function gestisciLogin(){
         alert("PER FAVORE COMPILA ENTRAMBI I CAMPI PRIMA DI PROSEGUIRE");
         return;
     }
-    
 }
-
-// Elementi pagina di login (decorativi)
-
-// Gestione dinamica dei Modal
-let modalElement1 = document.getElementById('mymodal');
-let modalElement2 = document.getElementById('mymodal1');
-let myModal, myModal1, p1, p2, p3;
-
-if (modalElement1 && modalElement2) {
-    myModal = new bootstrap.Modal(modalElement1);
-    p1 = document.getElementById("p1");
-    
-    myModal1 = new bootstrap.Modal(modalElement2);
-    p2 = document.getElementById("p2");
-    p3 = document.getElementById("p3");
-}
-
-// Lettura iniziale dei dati memorizzati nel Browser
-let datiSalvati = localStorage.getItem("registroViaggi");
-if (datiSalvati) {
-    viaggi = JSON.parse(datiSalvati);
-}
-
-// Disegna la tabella dei dati caricati al boot su qualunque pagina si trovi
-lista();
-
-// Attivazione ascoltatori eventi solo se siamo nella pagina del form (index.html)
-if (btn) btn.addEventListener("click", aggiungi);
-if (btn1) btn1.addEventListener("click", mostraModalSpesa);
-if (btn2) btn2.addEventListener("click", mostraModalVoli);
-if (btn3) btn3.addEventListener("click", eliminaTutti);
-if (btn4) btn4.addEventListener("click", eliminaCittà);
-if (btnSave) btnSave.addEventListener("click", salvaInLocalStorage);
-if (btnGemini) btnGemini.addEventListener("click", generaConsigliGemini);
-
-
-// --- Logica delle Funzioni ---
 
 function aggiungi() {
     let cit = città.value.trim();
@@ -166,63 +157,84 @@ function eliminaTutti() {
     }
 }
 
+// --- GENERAZIONE DINAMICA DELLA TABELLA (createElement & appendChild) ---
 function lista() {
     if (!container2) return;
     container2.innerHTML = "";
     
     if (viaggi.length == 0) {
-        container2.innerHTML = '<div class="alert alert-secondary text-center">Nessun viaggio presente in memoria.</div>';
+        let alertDiv = document.createElement("div");
+        alertDiv.className = "alert alert-secondary text-center";
+        alertDiv.textContent = "Nessun viaggio presente in memoria.";
+        container2.appendChild(alertDiv);
         return;
     }
 
     let p = document.createElement("p");
-    p.innerHTML = "<strong>Numero complessivo di viaggi salvati:</strong> " + viaggi.length;
+    let strongText = document.createElement("strong");
+    strongText.textContent = "Numero complessivo di viaggi salvati: ";
+    p.appendChild(strongText);
+    p.appendChild(document.createTextNode(viaggi.length));
     container2.appendChild(p);
 
     let table = document.createElement("table");
     table.className = "table table-striped table-bordered";
 
-    table.innerHTML = `
-        <thead>
-            <tr>
-                <th>Città</th>
-                <th>Data</th>
-                <th>Costo Totale</th>
-                <th>Volo aereo</th>
-            </tr>
-        </thead>
-    `;
+    // Creazione del Thead
+    let thead = document.createElement("thead");
+    let headerTr = document.createElement("tr");
+    let intestazioni = ["Città", "Data", "Costo Totale", "Volo aereo"];
+    
+    intestazioni.forEach(testo => {
+        let th = document.createElement("th");
+        th.textContent = testo;
+        headerTr.appendChild(th);
+    });
+    thead.appendChild(headerTr);
+    table.appendChild(thead);
 
+    // Creazione del Tbody con i singoli record
     let tbody = document.createElement("tbody");
     for (let i = 0; i < viaggi.length; i++) {
         let tr = document.createElement("tr");
-        let flightText;
-        if (viaggi[i].checkbox == true) {
-            flightText = "Sì ✈️";
-        } else {
-            flightText = "No 🚗";
-        }
-        tr.innerHTML = '<td>' + viaggi[i].città + '</td>' +
-                       '<td>' + viaggi[i].data + '</td>' +
-                       '<td>' + viaggi[i].prezzo.toFixed(2) + ' €</td>' +
-                       '<td>' + flightText + '</td>';
+        
+        let tdCitta = document.createElement("td");
+        tdCitta.textContent = viaggi[i].città;
+        tr.appendChild(tdCitta);
+        
+        let tdData = document.createElement("td");
+        tdData.textContent = viaggi[i].data;
+        tr.appendChild(tdData);
+        
+        let tdPrezzo = document.createElement("td");
+        tdPrezzo.textContent = viaggi[i].prezzo.toFixed(2) + " €";
+        tr.appendChild(tdPrezzo);
+        
+        let tdVolo = document.createElement("td");
+        tdVolo.textContent = viaggi[i].checkbox == true ? "Sì ✈️" : "No 🚗";
+        tr.appendChild(tdVolo);
+        
         tbody.appendChild(tr);
     }
     table.appendChild(tbody);
     container2.appendChild(table);
 }
 
-// Gestione dei dati nei pannelli a comparsa (Modal)
+// --- POPOLAMENTO MODAL (createElement & appendChild) ---
+
 function mostraModalSpesa() {
     let tot = 0;
     for (let i = 0; i < viaggi.length; i++) {
         tot += viaggi[i].prezzo;
     }
-    p1.innerHTML = "La somma totale calcolata ammonta a: <strong>" + tot.toFixed(2) + " €</strong>";
+    p1.textContent = "La somma totale calcolata ammonta a: ";
+    let strongSpesa = document.createElement("strong");
+    strongSpesa.textContent = tot.toFixed(2) + " €";
+    p1.appendChild(strongSpesa);
+    
     myModal.show();
 }
 
-// Elenco tratte aeree
 function mostraModalVoli() {
     let aereoCitta = [];
     let contatoreVoli = 0;
@@ -234,11 +246,16 @@ function mostraModalVoli() {
         }
     }
     
-    p2.innerHTML = "L'utente ha preso il volo per un totale di <strong>" + contatoreVoli + "</strong> volte.";
+    p2.textContent = "L'utente ha preso il volo per un totale di ";
+    let strongVoli = document.createElement("strong");
+    strongVoli.textContent = contatoreVoli;
+    p2.appendChild(strongVoli);
+    p2.appendChild(document.createTextNode(" volte."));
+    
     if (aereoCitta.length > 0) {
-        p3.innerHTML = aereoCitta.join(", ");
+        p3.textContent = aereoCitta.join(", ");
     } else {
-        p3.innerHTML = "Nessun volo inserito.";
+        p3.textContent = "Nessun volo inserito.";
     }
     myModal1.show();
 }
@@ -248,11 +265,7 @@ function salvaInLocalStorage() {
     alert("Database locale aggiornato e sincronizzato nel browser con successo!");
 }
 
-function costruisciPromptGemini() {
-    const cittàVisitata = viaggi.map(v => v.città);
-    const jsonCittà = JSON.stringify(cittàVisitata);
-    return `Leggi i seguenti dati in JSON:\n${jsonCittà}\nRispondi esclusivamente in JSON (no backtick, no markdown) suggerendomi 3 nuove città che potrei visitare in base ai dati che ti ho fornito. Il JSON che devi fornire deve avere un campo listaSuggerimenti che contiene un array di 3 oggetti dove ogni oggetto ha 2 campi: nome che contiene il nome della città e descrizione che contiene una brevissima descrizione sul perchè quella città è stata proposta`;
-}
+// --- FUNZIONALITA' GEMINI API (Invariata e funzionante) ---
 
 async function generaConsigliGemini() {
     if (!geminiOutput) return;
@@ -264,45 +277,66 @@ async function generaConsigliGemini() {
 
     geminiOutput.innerHTML = '<div class="alert alert-info">Invio richiesta a Gemini... attendere.</div>';
 
-    const apiKey = window.GEMINI_API_KEY || localStorage.getItem('GEMINI_API_KEY');
-    if (!apiKey) {
-        geminiOutput.innerHTML = '<div class="alert alert-danger">Chiave API Gemini mancante. Imposta window.GEMINI_API_KEY o salva la chiave in localStorage con GEMINI_API_KEY.</div>';
-        return;
-    }
+    const API_KEY = "AIzaSyDLwX8nB3zU9gFPT7AxJWrqoZ3M0WBCxxo";
+    const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
-    const prompt = costruisciPromptGemini();
-    const modelName = window.GEMINI_MODEL || 'gemini-1.0';
+    const cittàVisitate = viaggi.map(v => v.città);
+    const datiViaggiJSON = JSON.stringify(cittàVisitate);
+    
+    const prompt = `Leggi i seguenti dati in JSON:\n${datiViaggiJSON}\nRispondi esclusivamente in JSON (no backtick, no markdown) suggerendomi 3 nuove città che potrei visitare in base dei dati che ti ho fornito. Il JSON che devi fornire deve avere un campo listaSuggerimenti che contiene un array di 3 oggetti dove ogni oggetto ha 2 campi: nome che contiene il nome della città e descrizione che contiene una brevissima descrizione sul perchè quella città è stata proposta.`;
+
+    const oggettoRichiestaGemini = {
+        "contents": [
+            {
+                "parts": [
+                    { "text": prompt }
+                ]
+            }
+        ]
+    };
 
     try {
-        const response = await fetch('https://api.openai.com/v1/responses', {
-            method: 'POST',
+        const response = await fetch(ENDPOINT, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                model: modelName,
-                input: prompt,
-                temperature: 0.8
-            })
+            body: JSON.stringify(oggettoRichiestaGemini)
         });
 
         const data = await response.json();
+        
         if (!response.ok) {
-            geminiOutput.innerHTML = `<div class="alert alert-danger">Errore Gemini: ${response.status} ${response.statusText}<pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            geminiOutput.innerHTML = `<div class="alert alert-danger">Errore Gemini: ${response.status}</div>`;
             return;
         }
 
-        let textOutput = data.output_text || '';
-        if (!textOutput && data.output && data.output.length > 0) {
-            textOutput = data.output.map(item => item.content?.map(c => c.text).join('')).join('');
-        }
-        if (!textOutput) {
-            textOutput = JSON.stringify(data, null, 2);
+        const textOutput = data.candidates[0].content.parts[0].text;
+        
+        let consigli;
+        try {
+            consigli = JSON.parse(textOutput);
+        } catch (e) {
+            let cleanedText = textOutput.replace(/```json/g, "").replace(/```/g, "").trim();
+            consigli = JSON.parse(cleanedText);
         }
 
-        geminiOutput.innerHTML = `<div class="card bg-white p-3 border rounded"><pre class="mb-0">${textOutput}</pre></div>`;
+        let htmlContent = `<h4 class="mb-3 text-primary">Le mete suggerite per te:</h4><ul class="list-group">`;
+        
+        if (consigli.listaSuggerimenti && consigli.listaSuggerimenti.length > 0) {
+            consigli.listaSuggerimenti.forEach(citta => {
+                htmlContent += `<li class="list-group-item"><strong>${citta.nome}</strong>: ${citta.descrizione}</li>`;
+            });
+        } else {
+            htmlContent += `<li class="list-group-item text-danger">Nessun suggerimento trovato.</li>`;
+        }
+        
+        htmlContent += `</ul>`;
+        
+        geminiOutput.innerHTML = `<div class="p-3 border rounded bg-white shadow-sm">${htmlContent}</div>`;
+
     } catch (error) {
-        geminiOutput.innerHTML = `<div class="alert alert-danger">Errore durante la chiamata a Gemini: ${error.message}</div>`;
+        console.error("Errore completo:", error);
+        geminiOutput.innerHTML = `<div class="alert alert-danger">Errore durante la chiamata a Gemini: Assicurati che l'API Key sia valida e di avere una connessione attiva.</div>`;
     }
 }
