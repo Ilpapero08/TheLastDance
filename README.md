@@ -40,7 +40,7 @@ L'applicazione è strutturata in modo modulare su tre schermate principali colle
 
 Per abilitare le funzioni di Intelligenza Artificiale, apri il file `script.js` e inserisci il tuo token segreto ottenuto da Google AI Studio nella costante in cima al file:
 
-> `const API_KEY = "";`
+> `const API_KEY = "LA_TUA_API_KEY_GEMINI_QUI";`
 
 ---
 
