@@ -3,6 +3,32 @@ let viaggi = [];
 // Elementi comuni
 let container2 = document.getElementById("container2");
 
+const alertContainer = document.createElement("div");
+alertContainer.className = "custom-alert-container";
+document.body.appendChild(alertContainer);
+
+function showAlert(message, variant = "secondary", duration = 3800) {
+    const alertDiv = document.createElement("div");
+    alertDiv.className = `alert alert-${variant} custom-alert`;
+    alertDiv.textContent = message;
+    alertContainer.appendChild(alertDiv);
+
+    setTimeout(() => {
+        alertDiv.classList.add("hide");
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.parentNode.removeChild(alertDiv);
+            }
+        }, 240);
+    }, duration);
+
+    alertDiv.addEventListener("transitionend", () => {
+        if (alertDiv.parentNode) {
+            alertDiv.parentNode.removeChild(alertDiv);
+        }
+    });
+}
+
 // Elementi specifici di index.html
 let città = document.getElementById("city");
 let data = document.getElementById("date");
@@ -69,30 +95,30 @@ function gestisciLogin() {
     let pass = password.value;
 
     if (user == "admin" && pass == "admin") {
-        alert("ACCESSO EFFETTUATO! CREDENZIALI CORRETTE");
-        window.location.href = 'index.html';
+        showAlert("ACCESSO EFFETTUATO! CREDENZIALI CORRETTE", "success");
+        setTimeout(() => { window.location.href = 'index.html'; }, 700);
         return;
     } else {
         if (user.length != 0 && pass.length == 0) {
-            alert("PER FAVORE INSERISCI ANCHE LA PASSWORD PRIMA DI PROSEGUIRE");
+            showAlert("PER FAVORE INSERISCI ANCHE LA PASSWORD PRIMA DI PROSEGUIRE", "warning");
             return;
         } else if (user.length == 0 && pass.length != 0) {
-            alert("PER FAVORE INSERISCI ANCHE L'USERNAME PRIMA DI PROSEGUIRE");
+            showAlert("PER FAVORE INSERISCI ANCHE L'USERNAME PRIMA DI PROSEGUIRE", "warning");
             return;
         } else if (user.length != 0 && pass.length != 0) {
             if (pass.length >= 8 && pass.length <= 20) {
                 if (/[A-Z]/.test(pass) && /[a-z]/.test(pass) && /\d/.test(pass)) {
-                    alert("ACCESSO EFFETTUATO! PASSWORD VALIDA");
-                    window.location.href = 'index.html';
+                    showAlert("ACCESSO EFFETTUATO! PASSWORD VALIDA", "success");
+                    setTimeout(() => { window.location.href = 'index.html'; }, 700);
                     return;
                 }
-                alert("LA PASSWORD NON SODDISFA I REQUISITI MINIMI");
+                showAlert("LA PASSWORD NON SODDISFA I REQUISITI MINIMI", "warning");
                 return;
             }
-            alert("LA PASSWORD NON SODDISFA I REQUISITI MINIMI");
+            showAlert("LA PASSWORD NON SODDISFA I REQUISITI MINIMI", "warning");
             return;
         }
-        alert("PER FAVORE COMPILA ENTRAMBI I CAMPI PRIMA DI PROSEGUIRE");
+        showAlert("PER FAVORE COMPILA ENTRAMBI I CAMPI PRIMA DI PROSEGUIRE", "warning");
         return;
     }
 }
@@ -104,7 +130,7 @@ function aggiungi() {
     let check = checkbox.checked;
 
     if (cit == "" || date == "" || isNaN(pr)) {
-        alert("Compila tutti i campi correttamente prima di procedere.");
+        showAlert("Compila tutti i campi correttamente prima di procedere.", "warning");
         return;
     }
 
@@ -121,7 +147,7 @@ function aggiungi() {
 
         viaggi.push(viaggio);
         localStorage.setItem("registroViaggi", JSON.stringify(viaggi));
-        alert("Viaggio registrato in elenco!");
+        showAlert("Viaggio registrato in elenco!", "success");
         lista();
         
         città.value = "";
@@ -129,7 +155,7 @@ function aggiungi() {
         prezzo.value = "";
         checkbox.checked = false;
     } else {
-        alert("Questa città esiste già nel tuo registro storico!");
+        showAlert("Questa città esiste già nel tuo registro storico!", "warning");
     }
 }
 
@@ -149,11 +175,11 @@ function eliminaCittà() {
     if (indice != -1) {
         viaggi.splice(indice, 1);
         localStorage.setItem("registroViaggi", JSON.stringify(viaggi));
-        alert("Viaggio eliminato con successo.");
+        showAlert("Viaggio eliminato con successo.", "success");
         città1.value = "";
         lista();
     } else {
-        alert("La città indicata non è presente nell'elenco.");
+        showAlert("La città indicata non è presente nell'elenco.", "warning");
     }
 }
 
@@ -162,7 +188,7 @@ function eliminaTutti() {
         viaggi = [];
         localStorage.removeItem("registroViaggi");
         lista();
-        alert("Archivio azzerato.");
+        showAlert("Archivio azzerato.", "success");
     }
 }
 
@@ -289,7 +315,7 @@ function mostraModalVoli() {
 
 function salvaInLocalStorage() {
     localStorage.setItem("registroViaggi", JSON.stringify(viaggi));
-    alert("Database locale aggiornato e sincronizzato nel browser con successo!");
+    showAlert("Database locale aggiornato e sincronizzato nel browser con successo!", "success");
 }
 
 // --- FUNZIONALITA' GEMINI API (Invariata) ---
@@ -304,7 +330,7 @@ async function generaConsigliGemini() {
 
     geminiOutput.innerHTML = '<div class="alert alert-info">Invio richiesta a Gemini... attendere.</div>';
 
-    const API_KEY = "";
+    const API_KEY = "LA_TUA_API_KEY_GEMINI_QUI"; 
     const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
     const cittàVisitate = viaggi.map(v => v.città);
