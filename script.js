@@ -24,15 +24,24 @@ let loginButton = document.getElementById("loginButton");
 let username = document.getElementById("username");
 let password = document.getElementById("password");
 
-// Gestione dei Modal
+// Riferimenti agli elementi dei Modal e del testo interno
 let modalElement1 = document.getElementById('mymodal');
 let modalElement2 = document.getElementById('mymodal1');
-let myModal = new bootstrap.Modal(modalElement1);
 let p1 = document.getElementById("p1");
-
-let myModal1 = new bootstrap.Modal(modalElement2);
 let p2 = document.getElementById("p2");
 let p3 = document.getElementById("p3");
+
+// Inizializzazione IMMEDIATA dei Modal globale tramite blocchi if tradizionali
+let myModal = null;
+let myModal1 = null;
+
+if (window.bootstrap && modalElement1) {
+    myModal = new bootstrap.Modal(modalElement1);
+}
+
+if (window.bootstrap && modalElement2) {
+    myModal1 = new bootstrap.Modal(modalElement2);
+}
 
 // Lettura iniziale dei dati memorizzati nel Browser
 let datiSalvati = localStorage.getItem("registroViaggi");
@@ -43,15 +52,15 @@ if (datiSalvati) {
 // Chiamata immediata della funzione di rendering della tabella
 lista();
 
-// --- ASSEGNAZIONE DEGLI EVENTI (Ripristinata senza controlli condizionali) ---
-loginButton.addEventListener('click', gestisciLogin);
-btn.addEventListener("click", aggiungi);
-btn1.addEventListener("click", mostraModalSpesa);
-btn2.addEventListener("click", mostraModalVoli);
-btn3.addEventListener("click", eliminaTutti);
-btn4.addEventListener("click", eliminaCittà);
-btnSave.addEventListener("click", salvaInLocalStorage);
-btnGemini.addEventListener("click", generaConsigliGemini);
+// --- ASSEGNAZIONE DEGLI EVENTI TRAMITE L'OPERATORE AND (&&) ---
+loginButton && loginButton.addEventListener('click', gestisciLogin);
+btn && btn.addEventListener("click", aggiungi);
+btn1 && btn1.addEventListener("click", mostraModalSpesa);
+btn2 && btn2.addEventListener("click", mostraModalVoli);
+btn3 && btn3.addEventListener("click", eliminaTutti);
+btn4 && btn4.addEventListener("click", eliminaCittà);
+btnSave && btnSave.addEventListener("click", salvaInLocalStorage);
+btnGemini && btnGemini.addEventListener("click", generaConsigliGemini);
 
 // --- LOGICA DELLE FUNZIONI ---
 
@@ -193,7 +202,7 @@ function lista() {
     thead.appendChild(headerTr);
     table.appendChild(thead);
 
-    // Creazione del Tbody con i singoli record
+    // Creazione del Tbody
     let tbody = document.createElement("tbody");
     for (let i = 0; i < viaggi.length; i++) {
         let tr = document.createElement("tr");
@@ -211,7 +220,12 @@ function lista() {
         tr.appendChild(tdPrezzo);
         
         let tdVolo = document.createElement("td");
-        tdVolo.textContent = viaggi[i].checkbox == true ? "Sì ✈️" : "No 🚗";
+        // Sostituito l'operatore ternario con un blocco if-else classico
+        if (viaggi[i].checkbox == true) {
+            tdVolo.textContent = "Sì ✈️";
+        } else {
+            tdVolo.textContent = "No 🚗";
+        }
         tr.appendChild(tdVolo);
         
         tbody.appendChild(tr);
@@ -227,12 +241,17 @@ function mostraModalSpesa() {
     for (let i = 0; i < viaggi.length; i++) {
         tot += viaggi[i].prezzo;
     }
-    p1.textContent = "La somma totale calcolata ammonta a: ";
-    let strongSpesa = document.createElement("strong");
-    strongSpesa.textContent = tot.toFixed(2) + " €";
-    p1.appendChild(strongSpesa);
     
-    myModal.show();
+    if (p1) {
+        p1.textContent = "La somma totale calcolata ammonta a: ";
+        let strongSpesa = document.createElement("strong");
+        strongSpesa.textContent = tot.toFixed(2) + " €";
+        p1.appendChild(strongSpesa);
+    }
+    
+    if (myModal) {
+        myModal.show();
+    }
 }
 
 function mostraModalVoli() {
@@ -246,18 +265,26 @@ function mostraModalVoli() {
         }
     }
     
-    p2.textContent = "L'utente ha preso il volo per un totale di ";
-    let strongVoli = document.createElement("strong");
-    strongVoli.textContent = contatoreVoli;
-    p2.appendChild(strongVoli);
-    p2.appendChild(document.createTextNode(" volte."));
-    
-    if (aereoCitta.length > 0) {
-        p3.textContent = aereoCitta.join(", ");
-    } else {
-        p3.textContent = "Nessun volo inserito.";
+    if (p2) {
+        p2.textContent = "L'utente ha preso il volo per un totale di ";
+        let strongVoli = document.createElement("strong");
+        strongVoli.textContent = contatoreVoli;
+        p2.appendChild(strongVoli);
+        p2.appendChild(document.createTextNode(" volte."));
     }
-    myModal1.show();
+    
+    if (p3) {
+        p3.textContent = "";
+        if (aereoCitta.length > 0) {
+            p3.textContent = aereoCitta.join(", ");
+        } else {
+            p3.textContent = "Nessun volo inserito.";
+        }
+    }
+    
+    if (myModal1) {
+        myModal1.show();
+    }
 }
 
 function salvaInLocalStorage() {
@@ -265,7 +292,7 @@ function salvaInLocalStorage() {
     alert("Database locale aggiornato e sincronizzato nel browser con successo!");
 }
 
-// --- FUNZIONALITA' GEMINI API (Invariata e funzionante) ---
+// --- FUNZIONALITA' GEMINI API (Invariata) ---
 
 async function generaConsigliGemini() {
     if (!geminiOutput) return;
@@ -277,13 +304,13 @@ async function generaConsigliGemini() {
 
     geminiOutput.innerHTML = '<div class="alert alert-info">Invio richiesta a Gemini... attendere.</div>';
 
-    const API_KEY = "AIzaSyDLwX8nB3zU9gFPT7AxJWrqoZ3M0WBCxxo";
+    const API_KEY = "";
     const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
     const cittàVisitate = viaggi.map(v => v.città);
     const datiViaggiJSON = JSON.stringify(cittàVisitate);
     
-    const prompt = `Leggi i seguenti dati in JSON:\n${datiViaggiJSON}\nRispondi esclusivamente in JSON (no backtick, no markdown) suggerendomi 3 nuove città che potrei visitare in base dei dati che ti ho fornito. Il JSON che devi fornire deve avere un campo listaSuggerimenti che contiene un array di 3 oggetti dove ogni oggetto ha 2 campi: nome che contiene il nome della città e descrizione che contiene una brevissima descrizione sul perchè quella città è stata proposta.`;
+    const prompt = `Leggi i seguenti dati in JSON:\n${datiViaggiJSON}\nRispondi esclusivamente in JSON (no backtick, no markdown) suggerendomi 3 nuove città che potrei visitare in base ai dati che ti ho fornito. Il JSON che devi fornire deve avere un campo listaSuggerimenti che contiene un array di 3 oggetti dove ogni oggetto ha 2 campi: nome che contiene il nome della città e descrizione che contiene una brevissima descrizione sul perchè quella città è stata proposta.`;
 
     const oggettoRichiestaGemini = {
         "contents": [
