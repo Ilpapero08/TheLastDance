@@ -38,7 +38,7 @@ L'applicazione è strutturata in modo modulare su tre schermate principali colle
 
 ## 💡 Configurazione della Chiave API
 
-Per abilitare le funzioni di Intelligenza Artificiale, apri il file `script.js` e inserisci il tuo token ottenuto da Google AI Studio nella costante a riga numero 333:
+Per abilitare le funzioni di Intelligenza Artificiale, apri il file `script.js` e inserisci il tuo token ottenuto da Google AI Studio nella costante a riga numero 351:
 
 > `const API_KEY = "LA_TUA_API_KEY_GEMINI_QUI";`
 
