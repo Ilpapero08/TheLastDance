@@ -75,10 +75,13 @@ if (datiSalvati) {
     viaggi = JSON.parse(datiSalvati);
 }
 
+const isIndexPage = document.body.classList.contains("index-page");
+
 // Chiamata immediata della funzione di rendering della tabella
 lista();
+showLoginWelcome();
 
-// --- ASSEGNAZIONE DEGLI EVENTI TRAMITE L'OPERATORE AND (&&) ---
+// --- ASSEGNAZIONE DEGLI EVENTI ---
 loginButton && loginButton.addEventListener('click', gestisciLogin);
 btn && btn.addEventListener("click", aggiungi);
 btn1 && btn1.addEventListener("click", mostraModalSpesa);
@@ -95,6 +98,7 @@ function gestisciLogin() {
     let pass = password.value;
 
     if (user == "admin" && pass == "admin") {
+        sessionStorage.setItem("lastLoginUser", user);
         showAlert("ACCESSO EFFETTUATO! CREDENZIALI CORRETTE", "success");
         setTimeout(() => { window.location.href = 'index.html'; }, 700);
         return;
@@ -108,6 +112,7 @@ function gestisciLogin() {
         } else if (user.length != 0 && pass.length != 0) {
             if (pass.length >= 8 && pass.length <= 20) {
                 if (/[A-Z]/.test(pass) && /[a-z]/.test(pass) && /\d/.test(pass)) {
+                    sessionStorage.setItem("lastLoginUser", user);
                     showAlert("ACCESSO EFFETTUATO! PASSWORD VALIDA", "success");
                     setTimeout(() => { window.location.href = 'index.html'; }, 700);
                     return;
@@ -121,6 +126,16 @@ function gestisciLogin() {
         showAlert("PER FAVORE COMPILA ENTRAMBI I CAMPI PRIMA DI PROSEGUIRE", "warning");
         return;
     }
+}
+
+function showLoginWelcome() {
+    if (!isIndexPage) return;
+
+    const savedUser = sessionStorage.getItem("lastLoginUser");
+    if (!savedUser) return;
+
+    showAlert(`Benvenuto/a ${savedUser}, al diario THE LAST DANCE`, "success", 4200);
+    sessionStorage.removeItem("lastLoginUser");
 }
 
 function aggiungi() {
@@ -260,7 +275,7 @@ function lista() {
     container2.appendChild(table);
 }
 
-// --- POPOLAMENTO MODAL (createElement & appendChild) ---
+// --- POPOLAMENTO MODAL ---
 
 function mostraModalSpesa() {
     let tot = 0;
@@ -318,7 +333,7 @@ function salvaInLocalStorage() {
     showAlert("Database locale aggiornato e sincronizzato nel browser con successo!", "success");
 }
 
-// --- FUNZIONALITA' GEMINI API (Invariata) ---
+// --- FUNZIONALITA' GEMINI API  ---
 
 async function generaConsigliGemini() {
     if (!geminiOutput) return;
