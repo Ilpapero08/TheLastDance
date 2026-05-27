@@ -29,7 +29,7 @@ function showAlert(message, variant = "secondary", duration = 3800) {
     });
 }
 
-// Elementi specifici di index.html
+// Elementi dell'index
 let città = document.getElementById("city");
 let data = document.getElementById("date");
 let prezzo = document.getElementById("price");
@@ -45,19 +45,19 @@ let btnSave = document.getElementById("buttSave");
 let btnGemini = document.getElementById("btnGemini");
 let geminiOutput = document.getElementById("geminiOutput");
 
-// Elementi pagina di login
+// Elementi pagina del login
 let loginButton = document.getElementById("loginButton");
 let username = document.getElementById("username");
 let password = document.getElementById("password");
 
-// Riferimenti agli elementi dei Modal e del testo interno
+// Riferimenti agli elementi dei Modal e testo interno
 let modalElement1 = document.getElementById('mymodal');
 let modalElement2 = document.getElementById('mymodal1');
 let p1 = document.getElementById("p1");
 let p2 = document.getElementById("p2");
 let p3 = document.getElementById("p3");
 
-// Inizializzazione IMMEDIATA dei Modal globale tramite blocchi if tradizionali
+// Inizializzazione dei Modal globali
 let myModal = null;
 let myModal1 = null;
 
@@ -77,7 +77,7 @@ if (datiSalvati) {
 
 const isIndexPage = document.body.classList.contains("index-page");
 
-// Chiamata immediata della funzione di rendering della tabella
+// Chiamata immediata della funzione della tabella
 lista();
 showLoginWelcome();
 
@@ -153,6 +153,9 @@ function aggiungi() {
     let dataIt = partiData[2] + "-" + partiData[1] + "-" + partiData[0];
 
     if (controllaDuplicati(cit) == -1) {
+        if(cit=="Napoli" || cit=="napoli"){
+            showAlert("Napoli campione d'Italia e d'Europa --- Max Allegri in. simmo i cchiù fott", "info", 10000);
+        }
         let viaggio = {
             città: cit,
             data: dataIt,
@@ -207,7 +210,7 @@ function eliminaTutti() {
     }
 }
 
-// --- GENERAZIONE DINAMICA DELLA TABELLA (createElement & appendChild) ---
+// --- GENERAZIONE DINAMICA DELLA TABELLA ---
 function lista() {
     if (!container2) return;
     container2.innerHTML = "";
@@ -261,7 +264,7 @@ function lista() {
         tr.appendChild(tdPrezzo);
         
         let tdVolo = document.createElement("td");
-        // Sostituito l'operatore ternario con un blocco if-else classico
+        
         if (viaggi[i].checkbox == true) {
             tdVolo.textContent = "Sì ✈️";
         } else {
